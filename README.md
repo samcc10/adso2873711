@@ -3,7 +3,7 @@
 ## TGO en Analisis y Desarrollo de Software
 
 
-[NS 200](https://acortar.link/KQfmYp)
+![NS 200](https://acortar.link/KQfmYp)
 
 | TEMAS | DESCRIPCION |
 | ----- | ----------- |
