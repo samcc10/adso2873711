@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reponsive Design (Media Queries)</title>
+   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+    * {
+        transition: all 0.2s ease-in;
+    }
+    body {
+        background: url(images/fondogta4.png) ;
+        color: #fffc;
+        font-family: Poppins, sans-serif;
+        font-weight: 400;
+    }
+    main {
+        padding: 2rem;
+    }
+    main header figure.logo {
+        background: url(images/logogta\ \(1\).png) no-repeat center;
+        margin: 0 auto;
+        width: 500px;
+        height: 400px;
+    }
+    main p {
+        line-height: 2rem;
+        text-align: justify;
+    }
+    main h1 {
+        font-size: 4rem;
+        text-align: center;
+    }
+    main h1 span.small,
+    main h1 span.medium {
+        display: none;
+    }
+    @media (max-width: 1024px) {
+        main header figure.logo {
+            background: url(images/logogta.png);
+            width: 400px;
+            height: 350px;
+            
+        }
+        main h1 span.small,
+        main h1 span.large {
+            display: none;
+        }
+        main h1 span.medium {
+            display: inline;
+        }
+        main h1 {
+            font-size: 2.8rem;
+        }
+    }
+    @media (max-width: 780px) {
+        main header figure.logo {
+            background: url(images/logogta\ \(2\).png);
+            width: 270px;
+            height: 240px;
+        }
+        main h1 span.medium, 
+            main h1 span.large {
+                display: none;
+            }
+            main h1 span.small {
+            display: inline;
+        }
+        main h1 {
+            font-size: 2.8rem;
+        }
+    }
+    
+   </style>
+</head>
+<body>
+    <main>
+        <header>
+            <figure class="logo"></figure>
+        </header>
+        <section>
+            <h1>
+                <span class="large"></span>
+                <span class="medium"></span>
+                <span class="small"></span>
+            </h1>
+           
+        </section>
+    </main>
+</body>
+</html>
