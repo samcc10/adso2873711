@@ -28,13 +28,12 @@ nav.controls {
     }
 }
 main{
+    align-items: center;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    align-items: center;
     justify-content: center;
+    gap: 2rem;
     min-height: 100vh;
-    
 
     header{
         h1, h2{
@@ -50,6 +49,11 @@ main{
         h2{
             font-size: 1.4rem;
             
+        }
+            img {
+            border-radius: 50%;
+            width: 160px;
+            border: 10px solid #fff9;
         }
     }
     menu{
