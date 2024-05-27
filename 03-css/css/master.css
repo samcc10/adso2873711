@@ -36,6 +36,12 @@ main{
     min-height: 100vh;
 
     header{
+        align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    min-height: 30vh;
         h1, h2{
             color: #0009;
             text-align: center;
@@ -50,7 +56,7 @@ main{
             font-size: 1.4rem;
             
         }
-            img {
+        img {
             border-radius: 50%;
             width: 160px;
             border: 10px solid #fff9;
