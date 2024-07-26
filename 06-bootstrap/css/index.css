@@ -52,3 +52,6 @@ img{
     font-size: larger;
     font-weight: 700;
 }
+#services .col-md-4:hover {
+    background: rgb(109, 213, 232);
+}
