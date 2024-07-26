@@ -15,6 +15,9 @@ main {
     min-height: 100vh;
 
     header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         h1, h2 {
             color: #0009;
             text-align: center;
@@ -27,6 +30,12 @@ main {
         h2 {
             font-size: 1.4rem;
             font-weight: 300;
+        }
+        img {
+            border-radius: 50%;
+            background-color: #fff3;
+            width: 160px;
+            border: 10px solid #fff9;
         }
     }
 
