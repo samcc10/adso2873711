@@ -1,3 +1,4 @@
 {
-    "livePreview.defaultPreviewPath": "/08-javascript/index.html"
+    "livePreview.defaultPreviewPath": "/08-javascript/index.html",
+    "liveServer.settings.port": 5501
 }

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación del Clima</title>
+    <link rel="stylesheet" href="css/master.css">
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            height: 100vh;
+        }
+
+        .weather-card {
+            width: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            background-size: cover;
+            color: white;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Fondo diurno */
+        .day-mode {
+            background-image: url('https://media.istockphoto.com/id/491701259/es/foto/cielo-azul-con-el-sol.jpg?s=612x612&w=0&k=20&c=wJRiExXrs_rd6z-l-vHXaPQN7S7GsyEBlyqUw-_RuGM=');
+            color: #000;
+        }
+
+        /* Fondo nocturno */
+        .night-mode {
+            background-image: url('https://media.istockphoto.com/id/149360659/es/vector/fondo-de-cielo-nocturno.jpg?s=612x612&w=0&k=20&c=8E6RRFWYAQw-Brioul_27jzKFsJi6fKMYNkhjV5p1M8=');
+            color: #fff;
+        }
+
+        /* Header (ciudad, país, fecha) */
+        .weather-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .weather-header h2,
+        .weather-header h3 {
+            margin: 2px 0;
+        }
+
+        .weather-header #date {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Información del clima */
+        .weather-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Ajustamos la posición de la temperatura */
+        #temperature {
+            font-size: 4rem;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+            margin-top: 25px;
+        }
+
+        /* Movimiento del icono detrás de la temperatura */
+        .weather-icon {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            z-index: 1;
+            transform: translateX(-50%);
+            animation: moveIcon 6s infinite;
+        }
+
+        @keyframes moveIcon {
+            0% {
+                transform: translateX(-225px);
+            }
+
+            50% {
+                transform: translateX(225px);
+            }
+
+            100% {
+                transform: translateX(-225px);
+            }
+        }
+
+        /* Ajuste de la alineación de la condición, humedad y nubes */
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .stat {
+            display: inline-block;
+            width: 43%;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat span {
+            font-weight: bold;
+        }
+
+        /* Estilos para la condición */
+        #condition {
+            margin-top: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 10px;
+            width: 50%;
+            text-align: center;
+        }
+
+        /* Estilos para el formulario de cambio de ciudad */
+        .city-input {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            margin-bottom: 10px; /* Espacio para que no quede pegado al borde */
+        }
+
+        .city-input input {
+            padding: 5px;
+            border-radius: 5px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .city-input button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #585c20;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="controls">
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#ffffff" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+        </a>
+    </nav>
+    <main>
+        <header>
+            <h1>Challenge Conditional</h1>
+            <h2>Clima</h2>
+        </header>
+        <div class="weather-card" id="weatherCard">
+            <!-- Formulario para cambiar la ciudad -->
+            <div class="city-input">
+                <input type="text" id="cityInput" placeholder="Ingresa una ciudad" />
+                <button id="changeCityBtn">Cambiar Ciudad</button>
+            </div>
+    
+            <div class="weather-header">
+                <h2 id="city">Manizales</h2> <!-- Ciudad por defecto -->
+                <h3 id="country">Colombia</h3>
+                <h3 id="date">Fecha y Hora</h3>
+            </div>
+            <div class="weather-info">
+                <p id="temperature">--°C</p>
+                <img src="" alt="Icono del Clima" class="weather-icon" id="icon">
+                <div class="stats-container">
+                    <div class="stat" id="humidity">
+                        Humedad: <span>--</span>%
+                    </div>
+                    <div class="stat" id="cloud">
+                        Nubes: <span>--</span>%
+                    </div>
+                </div>
+                <div class="stat" id="condition">
+                    Condición: <span>--</span>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+
+    <script>
+        const urlBase = 'http://api.weatherapi.com/v1/current.json?key=9e0ae60a89604ea7ad5153342241511&q=';
+
+        const cityElement = document.getElementById('city');
+        const countryElement = document.getElementById('country');
+        const dateElement = document.getElementById('date');
+        const temperatureElement = document.getElementById('temperature');
+        const conditionElement = document.getElementById('condition');
+        const humidityElement = document.getElementById('humidity');
+        const cloudElement = document.getElementById('cloud');
+        const iconElement = document.getElementById('icon');
+        const weatherCard = document.getElementById('weatherCard');
+        const cityInputElement = document.getElementById('cityInput');
+        const changeCityBtn = document.getElementById('changeCityBtn');
+
+        let currentCity = 'Manizales'; // Ciudad por defecto
+
+        const loadWeather = async (city) => {
+            try {
+                const response = await fetch(urlBase + city);
+                const data = await response.json();
+
+                // Extraer datos y asignarlos al contenido del HTML
+                cityElement.textContent = data.location.name;
+                countryElement.textContent = data.location.country;
+
+                // Obtener fecha y hora en formato correcto
+                const localDate = new Date(data.location.localtime);
+                const hours = localDate.getHours().toString().padStart(2, '0');
+                const minutes = localDate.getMinutes().toString().padStart(2, '0');
+                dateElement.textContent = `${localDate.toLocaleDateString()} ${hours}:${minutes}`;
+
+                temperatureElement.textContent = `${data.current.temp_c}°C`;
+                conditionElement.textContent = `Condición: ${data.current.condition.text}`;
+                humidityElement.innerHTML = `Humedad: <span>${data.current.humidity}</span>%`;
+                cloudElement.innerHTML = `Nubes: <span>${data.current.cloud}</span>%`;
+
+                // Establecer el icono del clima
+                iconElement.setAttribute('src', `https:${data.current.condition.icon}`);
+
+                // Cambiar fondo según hora local
+                const localHour = new Date(data.location.localtime).getHours();
+                if (localHour >= 6 && localHour < 18) {
+                    weatherCard.classList.add('day-mode');
+                    weatherCard.classList.remove('night-mode');
+                } else {
+                    weatherCard.classList.add('night-mode');
+                    weatherCard.classList.remove('day-mode');
+                }
+            } catch (error) {
+                console.error('Error al cargar el clima:', error);
+            }
+        };
+
+        loadWeather(currentCity);
+
+        // Evento para cambiar la ciudad
+        changeCityBtn.addEventListener('click', () => {
+            const newCity = cityInputElement.value.trim();
+            if (newCity) {
+                currentCity = newCity;
+                loadWeather(currentCity);
+                cityInputElement.value = ''; // Limpiar el campo de entrada
+            }
+        });
+    </script>
+</body>
+
+</html>

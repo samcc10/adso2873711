@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge</title>
+    <link rel="stylesheet" href="css/master.css">
+    <style>
+        div.calculator {
+            background: url(images/calc/body-light.svg) no-repeat center;
+            width: 166px;
+            margin: 1rem auto;
+            height: 356px;
+            border-radius: 13px;
+
+            header.display {
+                position: relative;
+                height: 140px;
+
+                button.mode {
+                    background: url(images/calc/mode-light.svg);
+                    border: none;
+                    height: 21px;
+                    position: absolute;
+                    top: 19px;
+                    width: 49px;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                input.operation {
+                    background-color: transparent;
+                    border: none;
+                    color: #000;
+                    outline: none;
+                    position: absolute;
+                    font-size: 12px;
+                    font-family: Poppins, sans-serif;
+                    font-weight: 400;
+                    top: 82px;
+                    text-align: right;
+                    right: 11px;
+                    width: 149px;
+                }
+
+                h4.result {
+                    color: #000;
+                    position: absolute;
+                    font-size: 24px;
+                    font-weight: 500;
+                    overflow-x: auto;
+                    margin: 0;
+                    top: 97px;
+                    text-align: right;
+                    right: 11px;
+                    width: 146px;
+                }
+            }
+
+            footer.buttons {
+                display: grid;
+                grid-template-columns: repeat(4, 28px);
+                justify-content: center;
+                margin-top: 1.2rem;
+                gap: 0.6rem;
+
+                button {
+                    background-color: #D9D9D9;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    height: 28px;
+                    transition: transform 0.4s ease-in;
+                    width: 28px;
+
+                    &:hover {
+                        cursor: pointer;
+                        transform: scale(1.1);
+                    }
+
+                    &.btn-clear {
+                        background: url(images/calc/ac-light.svg);
+                    }
+
+                    &.btn-back {
+                        background: url(images/calc/menor-light.svg);
+                    }
+
+                    &.btn-pow {
+                        background: url(images/calc/pow-light.svg);
+                    }
+
+                    &.btn-mod {
+                        background: url(images/calc/mod-light.svg);
+                    }
+
+                    &.btn-7 {
+                        background: url(images/calc/7-light.svg);
+                    }
+
+                    &.btn-8 {
+                        background: url(images/calc/8-light.svg);
+                    }
+
+                    &.btn-9 {
+                        background: url(images/calc/9-light.svg);
+                    }
+
+                    &.btn-prod {
+                        background: url(images/calc/prod-light.svg);
+                    }
+
+                    &.btn-4 {
+                        background: url(images/calc/4-light.svg);
+                    }
+
+                    &.btn-5 {
+                        background: url(images/calc/5-light.svg);
+                    }
+
+                    &.btn-6 {
+                        background: url(images/calc/6-light.svg);
+                    }
+
+                    &.btn-subs {
+                        background: url(images/calc/subs-light.svg);
+                    }
+
+                    &.btn-1 {
+                        background: url(images/calc/1-light.svg);
+                    }
+
+                    &.btn-2 {
+                        background: url(images/calc/2-light.svg);
+                    }
+
+                    &.btn-3 {
+                        background: url(images/calc/3-light.svg);
+                    }
+
+                    &.btn-add {
+                        background: url(images/calc/add-light.svg);
+                    }
+
+                    &.btn-div {
+                        background: url(images/calc/div-light.svg);
+                    }
+
+                    &.btn-0 {
+                        background: url(images/calc/0-light.svg);
+                    }
+
+                    &.btn-dot {
+                        background: url(images/calc/dot-light.svg);
+                    }
+
+                    &.btn-equal {
+                        background: url(images/calc/equal-light.svg);
+                    }
+                }
+            }
+        }
+
+        /* Dark Mode */
+        div.calculator.dark {
+            background: url(images/calc/body-dark.svg) no-repeat center;
+
+            header.display {
+                button.mode {
+                    background: url(images/calc/mode-dark.svg);
+                }
+
+                input.operation {
+                    color: #fff;
+                }
+
+
+                h4.result {
+                    color: #fff;
+                }
+            }
+
+            footer.buttons {
+                button {
+                    &.btn-clear {
+                        background: url(images/calc/ac-dark.svg);
+                    }
+
+                    &.btn-back {
+                        background: url(images/calc/menor-dark.svg);
+                    }
+
+                    &.btn-pow {
+                        background: url(images/calc/pow-dark.svg);
+                    }
+
+                    &.btn-mod {
+                        background: url(images/calc/mod-dark.svg);
+                    }
+
+                    &.btn-7 {
+                        background: url(images/calc/numero-7.svg);
+                    }
+
+                    &.btn-8 {
+                        background: url(images/calc/numero-8.svg);
+                    }
+
+                    &.btn-9 {
+                        background: url(images/calc/numero-9.svg);
+                    }
+
+                    &.btn-prod {
+                        background: url(images/calc/prod-dark.svg);
+                    }
+
+                    &.btn-4 {
+                        background: url(images/calc/numero-4.svg);
+                    }
+
+                    &.btn-5 {
+                        background: url(images/calc/numero-5.svg);
+                    }
+
+                    &.btn-6 {
+                        background: url(images/calc/numero-6.svg);
+                    }
+
+                    &.btn-subs {
+                        background: url(images/calc/subs-dark.svg);
+                    }
+
+                    &.btn-1 {
+                        background: url(images/calc/numero-1.svg);
+                    }
+
+                    &.btn-2 {
+                        background: url(images/calc/numero-2.svg);
+                    }
+
+                    &.btn-3 {
+                        background: url(images/calc/numero-3.svg);
+                    }
+
+                    &.btn-add {
+                        background: url(images/calc/add-dark.svg);
+                    }
+
+                    &.btn-div {
+                        background: url(images/calc/div-dark.svg);
+                    }
+
+                    &.btn-0 {
+                        background: url(images/calc/numero-0.svg);
+                    }
+
+                    &.btn-dot {
+                        background: url(images/calc/dot-dark.svg);
+                    }
+
+                    &.btn-equal {
+                        background: url(images/calc/equal-dark.svg);
+                    }
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="controls">
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="#ffffff"
+                    d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+            </svg>
+        </a>
+    </nav>
+    <main>
+        <header>
+            <h1>Calculator 😈.</h1>
+            <h2>Challenge.</h2>
+        </header>
+        <section>
+            <div class="calculator">
+                <header class="display">
+                    <button class="mode"></button>
+                    <input type="text" class="operation" readonly>
+                    <h4 class="result"></h4>
+                </header>
+                <footer class="buttons">
+                    <button class="btn-clear"></button>
+                    <button class="btn-back"></button>
+                    <button class="btn-pow" data-opr="**"></button>
+                    <button class="btn-mod" data-opr="%"></button>
+
+                    <button class="btn-7" data-num="7"></button>
+                    <button class="btn-8" data-num="8"></button>
+                    <button class="btn-9" data-num="9"></button>
+                    <button class="btn-prod" data-opr="*"></button>
+
+                    <button class="btn-4" data-num="4"></button>
+                    <button class="btn-5" data-num="5"></button>
+                    <button class="btn-6" data-num="6"></button>
+                    <button class="btn-subs" data-opr="-"></button>
+
+                    <button class="btn-1" data-num="1"></button>
+                    <button class="btn-2" data-num="2"></button>
+                    <button class="btn-3" data-num="3"></button>
+                    <button class="btn-add" data-opr="+"></button>
+
+                    <button class="btn-div" data-opr="/"></button>
+                    <button class="btn-0" data-num="0"></button>
+                    <button class="btn-dot" data-opr="."></button>
+                    <button class="btn-equal"></button>
+                </footer>
+            </div>
+        </section>
+    </main>
+    <script>
+        // isDarkMode ------------------------------------------------------
+        const calculator = document.querySelector('.calculator')
+        const btnMode = document.querySelector('.mode')
+        const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)')
+        function detectMode() {
+            if (isDarkMode.matches) {
+                calculator.classList.add('dark')
+                //console.log('Mode: Dark')
+            } else {
+                calculator.classList.remove('dark')
+                //console.log('Mode: Light')
+            }
+        }
+        detectMode()
+        isDarkMode.addListener(detectMode)
+        btnMode.addEventListener('click', () => {
+            calculator.classList.toggle('dark')
+        })
+        // Buttons Actions ----------------------------------------------
+        const btnsNumbers = document.querySelectorAll('button[data-num]')
+        const btnsOpers = document.querySelectorAll('button[data-opr]')
+        const btnClear = document.querySelector('.btn-clear')
+        const btnBack = document.querySelector('.btn-back')
+        const btnEqual = document.querySelector('.btn-equal')
+        const operation = document.querySelector('.operation')
+        const result = document.querySelector('.result')
+        let isOper = false
+
+        function addToOperation(c) {
+            if (valdiateLength()) {
+                operation.value += c
+            }
+        }
+
+        function valdiateLength() {
+            if (operation.value.length < 20) {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        btnsNumbers.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                //addToOperation(btn.getAttribute('data-num'))
+                isOper = true
+                addToOperation(btn.dataset.num)
+            })
+        })
+
+        btnsOpers.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                //addToOperation(btn.getAttribute('data-opr'))
+                if (isOper) {
+                    addToOperation(btn.dataset.opr)
+                    isOper = false
+                }
+            })
+        })
+
+        btnClear.addEventListener('click', () => {
+            operation.value = ''
+            result.textContent = ''
+        })
+
+        btnEqual.addEventListener('click', () => {
+            if (operation.value.length != '') {
+                result.textContent = eval(operation.value)
+            }
+        })
+
+        btnBack.addEventListener('click', () => {
+            operation.value = operation.value.slice(0, -1)
+            if (isNaN(operation.value.slice(-1))) {
+                isOper = false
+            } else {
+                isOper = true
+            }
+        })
+        // key Events
+        document.addEventListener('keyup', (event) => {
+            //console.log(event.keyCode)
+            // 0-9       => keyCode: 96-97-98-99-100-101-102-103-104-105
+            // Backspace => keyCode: 8
+            // Enter     => keyCode: 13
+            // Delete    => keyCode: 46
+            // %         => keyCode: 53
+            // +         => keyCode: 107
+            // -         => keyCode: 109
+            // .         => keyCode: 110
+            // /         => keyCode: 111
+            // ^         => keyCode: 17-18-222
+            // *         => keyCode: 106
+
+            switch (event.keyCode) {
+                // Numbers 0 to 9 ----
+                case 96:
+                    isOper = true
+                    addToOperation(0)
+                    break;
+
+                case 97:
+                    isOper = true
+                    addToOperation(1)
+                    break;
+
+                case 98:
+                    isOper = true
+                    addToOperation(2)
+                    break;
+
+                case 99:
+                    isOper = true
+                    addToOperation(3)
+                    break;
+
+                case 100:
+                    isOper = true
+                    addToOperation(4)
+                    break;
+
+                case 101:
+                    isOper = true
+                    addToOperation(5)
+                    break;
+
+                case 102:
+                    isOper = true
+                    addToOperation(6)
+                    break;
+
+                case 103:
+                    isOper = true
+                    addToOperation(7)
+                    break;
+
+                case 104:
+                    isOper = true
+                    addToOperation(8)
+                    break;
+
+                case 105:
+                    isOper = true
+                    addToOperation(9)
+                    break;
+
+                //Operators ----------
+                case 8:
+                    operation.value = operation.value.slice(0, -1)
+                    if (isNaN(operation.value.slice(-1))) {
+                        isOper = false
+                    } else {
+                        isOper = true
+                    }
+                    break;
+
+                case 13:
+                    if (operation.value.length != '') {
+                        result.textContent = eval(operation.value)
+                    }
+                    break;
+
+                case 46:
+                    operation.value = ''
+                    result.textContent = ''
+                    break;
+
+                case 53:
+                    if (isOper) {
+                        addToOperation('%')
+                        isOper = false
+                    }
+                    break;
+
+                case 107:
+                    if (isOper) {
+                        addToOperation('+')
+                        isOper = false
+                    }
+                    break;
+
+                case 109:
+                    if (isOper) {
+                        addToOperation('-')
+                        isOper = false
+                    }
+                    break;
+
+                case 110:
+                    if (isOper) {
+                        addToOperation('.')
+                        isOper = false
+                    }
+                    break;
+
+                case 111:
+                    if (isOper) {
+                        addToOperation('/')
+                        isOper = false
+                    }
+                    break;
+
+                case 222:
+                    if (isOper) {
+                        addToOperation('**')
+                        isOper = false
+                    }
+                    break;
+
+                case 106:
+                    if (isOper) {
+                        addToOperation('*')
+                        isOper = false
+                    }
+                    break;
+                // Default -----------    
+                default:
+                    break;
+            }
+        })
+    </script>
+</body>
+
+</html>
