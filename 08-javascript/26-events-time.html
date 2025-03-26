@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>26- events time</title>
+    <link rel="stylesheet" href="css/master.css">
+    <style>
+        section h4.clock {
+            font-size: 2.8rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        section input {
+            border: 2px solid #b7a63c;
+            border-radius: 5px;
+            padding: 0.5rem;
+            width: 260px;
+        }
+
+        section button {
+            background-color: #b7a63c;
+            border-radius: 5px;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 0.6rem;
+            width: 110px;
+        }
+
+        section h4.refresh {
+            font-size: 1.6rem;
+            text-align: center;
+        }
+
+        section figure.sky {
+            background: url(images/sky.jpg) no-repeat center / cover;
+            border-radius: 4px;
+            border: 4px solid #b7a63c;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+            width: 380px;
+        }
+
+        section img.misil {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            transition: left 0.2s ease-in;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="controls">
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <path fill="#ffffff"
+                    d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+            </svg>
+        </a>
+    </nav>
+    <main>
+        <header>
+            <h1>Template</h1>
+            <h2>Handle time-based events and intervals.</h2>
+        </header>
+        <section>
+            <h3>SetInterval: Digital Clock</h3>
+            <h4 class="clock"></h4>
+            <h3>SetTimeout: Refresh Page</h3>
+            <input class="timeToRefresh" type="number" placeholder="Number of seconds">
+            <button class="btnSetTime">Set Time</button>
+            <h4 class="refresh"></h4>
+            <h3>Move Element: </h3>
+            <small><strong>Press Left & Right Keys</strong></small>
+            <figure class="sky">
+                <img class="misil" src="images/misil.png" alt="">
+            </figure>
+        </section>
+    </main>
+    <script>
+        // Elements
+        const clock = document.querySelector('.clock');
+        const timeRefresh = document.querySelector('.timeToRefresh');
+        const btnSetTime = document.querySelector('.btnSetTime');
+        const refresh = document.querySelector('.refresh');
+
+        // SetInterval
+        clock.textContent = "Loading...";
+        setInterval(() => {
+            let currentTime = new Date().toLocaleTimeString();
+            clock.textContent = currentTime;
+        }, 1000);
+
+        // SetTimeout
+        btnSetTime.addEventListener('click', () => {
+            if (!timeRefresh.value.length > 0) {
+                alert('Please, Enter number of seconds!');
+            } else {
+                let count = 1;
+                let time = parseInt(timeRefresh.value);
+                refresh.textContent = time + ' seconds to refresh!';
+                setInterval(() => {
+                    refresh.textContent = (time - count) + ' seconds to refresh!';
+                    count++;
+                }, 1000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, (parseInt(timeRefresh.value) * 1000));
+            }
+        });
+
+        const misil = document.querySelector('.misil');
+        let leftPosition = 48;
+
+        document.addEventListener('keyup', (event) => {
+            if (event.keyCode == 37) {
+                if (leftPosition > -60) {
+                    leftPosition -= 40;
+                    misil.style.transform = 'rotateY(0deg)';
+                    misil.style.left = leftPosition + 'px';
+                }
+            }
+            if (event.keyCode == 39) {
+                if (leftPosition < 300) {
+                    leftPosition += 40;
+                    misil.style.transform = 'rotateY(180deg)';
+                    misil.style.left = leftPosition + 'px';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
