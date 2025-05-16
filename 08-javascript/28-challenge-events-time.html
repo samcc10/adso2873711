@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/master.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <title>Rytthm Riff</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: url(images/RytthmRiff/FONDOO.png) no-repeat center center;
+      background-size: cover;
+      position: relative;
+      width: 418px;
+      height: 770px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 0;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      margin: 0 auto;
+    }
+
+    .game-title {
+      width: 80%;
+      max-width: 300px;
+      height: auto;
+      object-fit: contain;
+      margin-top: 40px;
+    }
+
+    .content-box {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      color: white;
+      width: 80%;
+      margin: 20px 0;
+    }
+
+    .text-content {
+      text-align: justify;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .start-button {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 40px;
+      animation: pulse 2s infinite;
+    }
+
+    .start-button:hover {
+      transform: scale(1.15);
+      animation: none;
+      filter: drop-shadow(0 0 10px rgba(255, 153, 0, 0.7));
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(255, 153, 0, 0.7));
+      }
+
+      50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 10px rgba(255, 153, 0, 0.7));
+      }
+
+      100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(255, 153, 0, 0.7));
+      }
+    }
+
+    .game-screen {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .game-screen-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .guitar {
+      position: absolute;
+      bottom: 150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 350px;
+      height: 200px;
+      z-index: 2;
+    }
+
+    .strings {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .string {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: #ddd;
+      left: 0;
+    }
+
+    .frets {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .fret {
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      background-color: #555;
+    }
+
+    .notes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+    }
+
+    .note {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: #ff9900;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+
+    .note:hover {
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    .note.active {
+      background-color: #ff3300;
+      transform: translate(-50%, -50%) scale(1.3);
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 4;
+    }
+
+    .control-btn {
+      padding: 8px 16px;
+      background-color: #ff9900;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 12px;
+    }
+
+    .control-btn:hover {
+      background-color: #ff6600;
+    }
+
+    .footer-buttons {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      gap: 25px; /* Aumentado el espacio entre botones */
+      z-index: 5;
+      width: 90%;
+    }
+
+    .footer-button {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .footer-button:hover {
+      transform: scale(1.2);
+    }
+
+    /* Estilos para las columnas y carriles */
+    .game-columns {
+      position: absolute;
+      bottom: 75px; /* Ajustado para estar justo encima de los botones */
+      left: 0;
+      width: 100%;
+      height: 80%;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      gap: 25px; /* Mismo espacio que los botones */
+    }
+
+    .game-column {
+      width: 50px; /* Mismo ancho que los botones */
+      height: 100%;
+      position: relative;
+    }
+
+    /* Estilos para las imágenes que caen */
+    .falling-image {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      z-index: 10;
+      pointer-events: none;
+      transform: translateX(-50%); /* Centrar la imagen en la columna */
+    }
+
+    .falling-images-container {
+      position: absolute;
+      width: 100%;
+      height: 80%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 3;
+    }
+
+    /* Líneas guía para las columnas (opcional, puedes quitar esto en producción) */
+    .column-guide {
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.1);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Indicador de zona de golpe */
+    .hit-zone {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background-color: rgba(255, 153, 0, 0.5);
+    }
+
+    /* Añadir contador de puntuación */
+    .score-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 5px;
+      color: #ff9900;
+      font-weight: bold;
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <section class="container">
+      <!-- Pantalla de inicio -->
+      <img class="game-title" src="images/RytthmRiff/TITLE.png" alt="Rytthm Riff" />
+
+      <div class="content-box">
+        <div class="text-content">
+          <p>¡Toca las notas correctas en el momento justo para encender el escenario! En Rhythm Riff, las flechas caen al ritmo—presiona la tecla correcta cuando lleguen a la zona de fuego para desatar poderosos acordes. Suma combos, activa el Modo Llama y conviértete en una leyenda de la guitarra.</p>
+        </div>
+      </div>
+
+      <img class="start-button" src="images/RytthmRiff/STARTGAME.png" alt="Start Game" />
+
+      <!-- Pantalla de juego -->
+      <div class="game-screen">
+        <img class="game-screen-bg" src="images/RytthmRiff/JUEGO.png" alt="Game Background" />
+        
+        <!-- Contador de puntuación -->
+        <div class="score-container">
+          <div>Puntuación: <span id="score">0</span></div>
+          <div>Combo: <span id="combo">0</span></div>
+        </div>
+        
+        <!-- Estructura de columnas -->
+        <div class="game-columns" id="gameColumns">
+          <!-- Las columnas se generarán dinámicamente -->
+        </div>
+        
+        <!-- Contenedor para las imágenes que caen -->
+        <div class="falling-images-container" id="fallingImagesContainer"></div>
+        
+        <div class="controls">
+          <button class="control-btn" id="back-btn">Volver al Menú</button>
+        </div>
+
+        <div class="footer-buttons" id="footerButtons">
+          <img class="footer-button" data-key="1" src="images/RytthmRiff/BOTON VERDE.png" alt="Botón 1" />
+          <img class="footer-button" data-key="2" src="images/RytthmRiff/BOTON AMARILLO.png" alt="Botón 2" />
+          <img class="footer-button" data-key="3" src="images/RytthmRiff/BOTON AZUL.png" alt="Botón 3" />
+          <img class="footer-button" data-key="4" src="images/RytthmRiff/BOTON ROJO.png" alt="Botón 4" />
+          <img class="footer-button" data-key="5" src="images/RytthmRiff/BOTON NEGRO.png" alt="Botón 5" />
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const startButton = document.querySelector(".start-button");
+      const gameScreen = document.querySelector(".game-screen");
+      const backButton = document.getElementById("back-btn");
+      const fallingImagesContainer = document.getElementById("fallingImagesContainer");
+      const footerButtons = document.getElementById("footerButtons");
+      const gameColumns = document.getElementById("gameColumns");
+      const scoreElement = document.getElementById("score");
+      const comboElement = document.getElementById("combo");
+
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      let oscillators = {};
+      
+      // Variables del juego
+      let score = 0;
+      let combo = 0;
+      let isGameRunning = false;
+      
+      // Variables para el control de imágenes que caen
+      let fallingImages = [];
+      let imageSpawnInterval;
+      const imagePaths = [
+        'images/RytthmRiff/FLECHARRIBA.png',
+        'images/RytthmRiff/FLECHABAJO.png',
+        'images/RytthmRiff/FLECHADER.png',
+        'images/RytthmRiff/FLECHAIZQ.png'
+      ];
+      
+      // Configuración del juego
+      const COLUMN_COUNT = 5; // Número de columnas/botones
+      const FALLING_SPEED = 3; // Velocidad base de caída
+      const SPAWN_INTERVAL = 1000; // Intervalo entre apariciones de imágenes (ms)
+      const HIT_ZONE_HEIGHT = 50; // Altura de la zona donde se deben golpear las notas
+      
+      // Crear columnas para el juego
+      function createGameColumns() {
+        gameColumns.innerHTML = '';
+        
+        for (let i = 0; i < COLUMN_COUNT; i++) {
+          const column = document.createElement('div');
+          column.className = 'game-column';
+          column.dataset.column = i;
+          
+          // Añadir línea guía (opcional)
+          const guide = document.createElement('div');
+          guide.className = 'column-guide';
+          column.appendChild(guide);
+          
+          // Añadir zona de golpe
+          const hitZone = document.createElement('div');
+          hitZone.className = 'hit-zone';
+          column.appendChild(hitZone);
+          
+          gameColumns.appendChild(column);
+        }
+      }
+      
+      // Función para calcular las posiciones exactas de los botones/columnas
+      function calculateColumnPositions() {
+        const columns = document.querySelectorAll('.game-column');
+        const columnPositions = [];
+        
+        columns.forEach(column => {
+          const rect = column.getBoundingClientRect();
+          const containerRect = document.querySelector('.container').getBoundingClientRect();
+          
+          // Calcular posición central de la columna relativa al contenedor
+          const centerX = rect.left - containerRect.left + (rect.width / 2);
+          columnPositions.push({
+            x: centerX,
+            element: column,
+            index: parseInt(column.dataset.column)
+          });
+        });
+        
+        return columnPositions;
+      }
+      
+      // Función para crear una imagen que cae
+      function spawnFallingImage() {
+        if (!isGameRunning) return;
+        
+        const columnPositions = calculateColumnPositions();
+        if (columnPositions.length === 0) return;
+        
+        // Elegir una columna aleatoria
+        const columnIndex = Math.floor(Math.random() * COLUMN_COUNT);
+        const column = columnPositions.find(col => col.index === columnIndex);
+        
+        if (!column) return;
+        
+        // Elegir una imagen aleatoria
+        const imageIndex = Math.floor(Math.random() * imagePaths.length);
+        const imagePath = imagePaths[imageIndex];
+        
+        // Crear elemento de imagen
+        const img = document.createElement('img');
+        img.src = imagePath;
+        img.className = 'falling-image';
+        img.style.left = `${column.x}px`;
+        img.style.top = '0px';
+        img.dataset.column = columnIndex;
+        img.dataset.imageType = imageIndex;
+        
+        // Añadir al contenedor
+        fallingImagesContainer.appendChild(img);
+        
+        // Guardar referencia para animación
+        const fallingImage = {
+          element: img,
+          x: column.x,
+          y: 0,
+          speed: FALLING_SPEED + Math.random(), // Pequeña variación en velocidad
+          column: columnIndex,
+          imageType: imageIndex,
+          isHit: false // Para evitar golpes múltiples
+        };
+        
+        fallingImages.push(fallingImage);
+      }
+      
+      // Función para animar las imágenes que caen
+      function animateFallingImages() {
+        if (!isGameRunning) return;
+        
+        const containerHeight = fallingImagesContainer.clientHeight;
+        const hitZoneTop = containerHeight - HIT_ZONE_HEIGHT;
+        const hitZoneBottom = containerHeight;
+        
+        for (let i = fallingImages.length - 1; i >= 0; i--) {
+          const img = fallingImages[i];
+          
+          // Mover la imagen hacia abajo
+          img.y += img.speed;
+          img.element.style.top = `${img.y}px`;
+          
+          // Comprobar si está en la zona de golpe
+          if (img.y >= hitZoneTop && img.y <= hitZoneBottom) {
+            img.element.style.filter = 'brightness(1.5)'; // Resaltar cuando está en zona de golpe
+          }
+          
+          // Eliminar si sale de la pantalla
+          if (img.y > containerHeight) {
+            // Si ha pasado sin ser golpeada, romper el combo
+            if (!img.isHit) {
+              combo = 0;
+              comboElement.textContent = combo;
+            }
+            
+            fallingImagesContainer.removeChild(img.element);
+            fallingImages.splice(i, 1);
+          }
+        }
+        
+        if (isGameRunning) {
+          requestAnimationFrame(animateFallingImages);
+        }
+      }
+      
+      // Función para iniciar el sistema de imágenes que caen
+      function startFallingImages() {
+        createGameColumns();
+        isGameRunning = true;
+        
+        // Reiniciar puntuación
+        score = 0;
+        combo = 0;
+        scoreElement.textContent = score;
+        comboElement.textContent = combo;
+        
+        // Iniciar animación
+        animateFallingImages();
+        
+        // Programar aparición de nuevas imágenes
+        imageSpawnInterval = setInterval(spawnFallingImage, SPAWN_INTERVAL);
+      }
+      
+      // Función para detener las imágenes que caen
+      function stopFallingImages() {
+        isGameRunning = false;
+        clearInterval(imageSpawnInterval);
+        
+        // Eliminar todas las imágenes existentes
+        fallingImages.forEach(img => {
+          if (img.element.parentNode) {
+            fallingImagesContainer.removeChild(img.element);
+          }
+        });
+        fallingImages = [];
+      }
+      
+      // Manejar clic en botones del juego
+      function handleButtonClick(e) {
+        const button = e.target.closest('.footer-button');
+        if (!button || !isGameRunning) return;
+        
+        const columnIndex = Array.from(footerButtons.children).indexOf(button);
+        const columnPositions = calculateColumnPositions();
+        const containerHeight = fallingImagesContainer.clientHeight;
+        const hitZoneTop = containerHeight - HIT_ZONE_HEIGHT;
+        const hitZoneBottom = containerHeight;
+        
+        // Efecto visual de pulsación
+        button.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+          button.style.transform = '';
+        }, 100);
+        
+        // Reproducir sonido
+        playSound(columnIndex);
+        
+        // Comprobar si hay alguna imagen en la zona de golpe de esta columna
+        let hit = false;
+        
+        for (let i = fallingImages.length - 1; i >= 0; i--) {
+          const img = fallingImages[i];
+          
+          if (img.column == columnIndex && img.y >= hitZoneTop && img.y <= hitZoneBottom && !img.isHit) {
+            // ¡Golpe acertado!
+            hit = true;
+            img.isHit = true;
+            
+            // Efecto visual
+            img.element.style.transform = 'translateX(-50%) scale(1.5)';
+            img.element.style.opacity = '0.7';
+            
+            // Incrementar puntuación y combo
+            combo++;
+            score += 10 * combo;
+            
+            scoreElement.textContent = score;
+            comboElement.textContent = combo;
+            
+            // Crear efecto de confeti para golpes buenos
+            if (combo > 5) {
+              createConfettiEffect(columnPositions[columnIndex].x, containerHeight - HIT_ZONE_HEIGHT);
+            }
+            
+            // Programar eliminación de la imagen
+            setTimeout(() => {
+              if (img.element.parentNode) {
+                fallingImagesContainer.removeChild(img.element);
+              }
+              const index = fallingImages.indexOf(img);
+              if (index > -1) {
+                fallingImages.splice(index, 1);
+              }
+            }, 100);
+            
+            break; // Solo golpear una imagen a la vez
+          }
+        }
+        
+        // Si no golpeó ninguna imagen en la zona correcta, romper el combo
+        if (!hit) {
+          combo = 0;
+          comboElement.textContent = combo;
+        }
+      }
+      
+      // Función para reproducir un sonido según la columna
+      function playSound(columnIndex) {
+        if (oscillators[columnIndex]) {
+          oscillators[columnIndex].gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+          oscillators[columnIndex].osc.stop(audioContext.currentTime + 0.1);
+          delete oscillators[columnIndex];
+        }
+        
+        // Frecuencias para cada columna (pentatónica)
+        const frequencies = [261.63, 293.66, 329.63, 349.23, 392.00]; // Do, Re, Mi, Fa, Sol
+        
+        const osc = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        osc.type = "sine";
+        osc.frequency.value = frequencies[columnIndex];
+        gainNode.gain.value = 0.3;
+        
+        osc.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        osc.start();
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+        osc.stop(audioContext.currentTime + 0.5);
+        
+        oscillators[columnIndex] = { osc, gainNode };
+      }
+      
+      // Crear efecto de confeti
+      function createConfettiEffect(x, y) {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { 
+            x: x / window.innerWidth, 
+            y: y / window.innerHeight 
+          },
+          colors: ['#ff9900', '#ff6600', '#ffcc00', '#ff3300'],
+          disableForReducedMotion: true
+        });
+      }
+      
+      // Eventos de botones principales
+      startButton.addEventListener("click", function () {
+        document.querySelector(".game-title").style.display = "none";
+        document.querySelector(".content-box").style.display = "none";
+        startButton.style.display = "none";
+        
+        gameScreen.style.display = "block";
+        startFallingImages();
+      });
+      
+      backButton.addEventListener("click", function () {
+        gameScreen.style.display = "none";
+        
+        document.querySelector(".game-title").style.display = "block";
+        document.querySelector(".content-box").style.display = "block";
+        startButton.style.display = "block";
+        
+        stopFallingImages();
+      });
+      
+      // Añadir eventos para los botones de juego
+      footerButtons.addEventListener('click', handleButtonClick);
+      
+      // Añadir soporte para teclado (teclas 1-5)
+      document.addEventListener('keydown', function(e) {
+        if (!isGameRunning) return;
+        
+        const keyMap = {
+          '1': 0, '2': 1, '3': 2, '4': 3, '5': 4,
+          'q': 0, 'w': 1, 'e': 2, 'r': 3, 't': 4
+        };
+        
+        if (keyMap.hasOwnProperty(e.key)) {
+          const buttonIndex = keyMap[e.key];
+          const buttons = footerButtons.querySelectorAll('.footer-button');
+          
+          if (buttonIndex >= 0 && buttonIndex < buttons.length) {
+            buttons[buttonIndex].click();
+          }
+        }
+      });
+    </script>
+  </main>
+</body>
+
+</html>
