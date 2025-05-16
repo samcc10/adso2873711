@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprite Animation</title>
+    <link rel="stylesheet" href="css/master.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .animation-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .soldier {
+            width: 140px;
+            height: 170px;
+            background-image: url('./images/sprite/sprite.png');
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            margin: 0 auto 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .controls button {
+            padding: 12px 24px;
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .controls button:hover {
+            background-color: #2d3748;
+            transform: translateY(-2px);
+        }
+
+        .controls button:active {
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: #4a5568;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <!------------ BOTON DE REGRESO ----------------->
+    <nav class="back-button">
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 448 512">
+                <path fill="#000000"
+                    d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+            </svg>
+        </a>
+    </nav>
+
+    <main>
+        <header>
+            <h1>SPRITE ANIMATION</h1>
+            <h2>Selecciona una animación</h2>
+        </header>
+
+        <section class="animation-container">
+            <div class="soldier"></div>
+            <div class="controls">
+                <button class="idle">Idle</button>
+                <button class="run">Correr</button>
+                <button class="atack">Atacar</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const soldier = document.querySelector('.soldier');
+        const idleBtn = document.querySelector('.idle');
+        const runBtn = document.querySelector('.run');
+        const atackBtn = document.querySelector('.atack');
+
+        const frameWidth = 140;
+        const frameHeight = 170;
+
+        let currentFrame = 0;
+        let fps = 6;
+        let lastTime = 0;
+        let totalFrames = 2;
+        let currentRow = 0;
+        let animationId;
+        let isAnimating = false;
+
+        function changeAnimation(newFps, newTotalFrames, newRow) {
+            setTimeout(() => {
+                fps = newFps;
+                totalFrames = newTotalFrames;
+                currentRow = newRow;
+                currentFrame = 0;
+                soldier.style.backgroundPositionY = `-${frameHeight * currentRow}px`;
+            }, 50);
+        }
+
+
+        idleBtn.addEventListener('click', () => {
+            changeAnimation(6, 2, 0);
+        });
+
+        runBtn.addEventListener('click', () => {
+            changeAnimation(10, 4, 1);
+        });
+
+        atackBtn.addEventListener('click', () => {
+            changeAnimation(8, 6, 2);
+        });
+
+        function animateSoldier(timestamp) {
+            if (!lastTime) lastTime = timestamp;
+            const deltaTime = timestamp - lastTime;
+
+            if (deltaTime > 2000 / fps) {
+                currentFrame = (currentFrame + 1) % totalFrames;
+                soldier.style.backgroundPositionX = `-${currentFrame * frameWidth}px`;
+                lastTime = timestamp - (deltaTime % (1000 / fps));
+            }
+
+            animationId = requestAnimationFrame(animateSoldier);
+        }
+
+        animateSoldier();
+    </script>
+</body>
+
+</html>
