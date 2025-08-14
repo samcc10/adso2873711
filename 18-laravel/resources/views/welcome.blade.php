@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('title', 'Welcome to LaraPets')
 @section('content')
-    <main class="bg-[url(images/bg-welcome.webp)] bg-cover w-full min-h-[100dvh] flex flex-col justify-center items-center">
+    <main class="bg-[url(images/fondo.png)] bg-cover w-full min-h-[100dvh] flex flex-col justify-center items-center">
         <div class="bg-[#0006] w-96 text-white p-10 rounded-lg flex flex-col justify-center items-center">
             <h1 class="text-4xl">Welcome to:</h1>
-            <img class="w-[400px]" src="{{ asset('images/logo.png') }}" alt="Logo">
+            <img class="w-[400px]" src="{{ asset('images/logo3.png') }}" alt="Logo">
             <p>
                 Pet adoption app connecting shelters with loving homes. Browse, match, 
                 and adopt pets easily. Find your perfect furry friend today!

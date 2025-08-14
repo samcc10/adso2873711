@@ -24,14 +24,11 @@ class UserFactory extends Factory
     public function definition(): array
     {
         $gender = fake()->randomElement(array('Female', 'Male'));
-        $name = ($gender == 'Female') ? $name = fake()->firstNameFemale() 
-                                      : $name = fake()->firstNameMale();
-        ($gender == 'Female') ? $g = 'girl' : $g = 'boy';
+        $name   = ($gender == 'Female')? $name = fake()->firstNameFemale()
+                                    : $name = fake()->firstNamemale();
+        ($gender == 'Female')? $g = 'girl' : $g = 'boy';
         $id = fake()->numerify('75######');
-        //https://avatar.iran.liara.run/username?username=[firstname+lastname]
-        //https://randomuser.me/api/portraits/men/75.jpg
-        //https://api.dicebear.com/9.x/pixel-art/svg?seed=Ofac
-        copy('https://avatar.iran.liara.run/public/'.$g, public_path('images/'.$id.'.png'));
+        copy('https://avatar.iran.liara.run/public/' . $g, public_path('images/'.$id.'.png'));
         $email = strtolower($name).fake()->numerify('###').'@email.com';
 
         return [
@@ -41,7 +38,7 @@ class UserFactory extends Factory
             'birthdate'         => fake()->dateTimeBetween('1977-01-01', '2007-12-31'),
             'photo'             => $id.'.png',
             'email'             => $email,
-            'phone'             => fake()->numerify('320#######'),
+            'phone'             => fake()->phoneNumber(),
             'email_verified_at' => now(),
             'password'          => static::$password ??= Hash::make('12345'),
             'remember_token'    => Str::random(10),
